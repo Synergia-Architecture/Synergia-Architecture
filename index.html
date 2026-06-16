@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synergia Architecture | Arq. Brayan Becerra</title>
+  <meta name="description" content="Portafolio profesional de Brayan Yesid Becerra Gómez: arquitectura, SIG, catastro multipropósito, ordenamiento territorial y visualización de datos." />
+  <style>
+    :root {
+      --bg: #070b12;
+      --bg-2: #0b1220;
+      --card: rgba(255,255,255,.075);
+      --line: rgba(255,255,255,.16);
+      --text: #f8fafc;
+      --muted: #aeb9c8;
+      --accent: #38bdf8;
+      --accent-2: #a7f3d0;
+      --gold: #facc15;
+      --radius: 26px;
+      --shadow: 0 28px 80px rgba(0,0,0,.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(56,189,248,.20), transparent 26rem),
+        radial-gradient(circle at 90% 4%, rgba(167,243,208,.16), transparent 28rem),
+        radial-gradient(circle at 75% 78%, rgba(250,204,21,.11), transparent 28rem),
+        linear-gradient(135deg, var(--bg), var(--bg-2) 55%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 78%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      width: min(1180px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(20px);
+      background: rgba(7,11,18,.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(56,189,248,.9), rgba(167,243,208,.9));
+      color: #03121d;
+      box-shadow: 0 12px 35px rgba(56,189,248,.25);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      font-size: .92rem;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 999px;
+      transition: .22s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+    }
+
+    .hero { padding: 76px 0 44px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 620px;
+      padding: clamp(26px, 5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04)),
+        radial-gradient(circle at 80% 10%, rgba(56,189,248,.27), transparent 22rem);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      right: -260px;
+      bottom: -260px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.20);
+      box-shadow: inset 0 0 80px rgba(56,189,248,.16);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      padding: 8px 12px;
+      border: 1px solid rgba(167,243,208,.22);
+      border-radius: 999px;
+      background: rgba(167,243,208,.08);
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 8px rgba(167,243,208,.10);
+    }
+
+    h1 {
+      margin: 28px 0 16px;
+      font-size: clamp(2.4rem, 6vw, 5.7rem);
+      line-height: .94;
+      letter-spacing: -.07em;
+    }
+
+    .grad {
+      background: linear-gradient(90deg, #fff, #bae6fd 38%, #a7f3d0 70%, #facc15);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: #cbd5e1;
+      font-size: clamp(1.02rem, 1.7vw, 1.24rem);
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.13);
+      border-color: rgba(255,255,255,.30);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #04111c;
+      border: none;
+      box-shadow: 0 14px 38px rgba(56,189,248,.24);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+      max-width: 760px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,.07);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: .88rem;
+    }
+
+    .profile-panel { display: grid; gap: 18px; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.07);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .photo-card {
+      min-height: 310px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(56,189,248,.28), transparent 18rem),
+        linear-gradient(135deg, rgba(255,255,255,.13), rgba(255,255,255,.04));
+    }
+
+    .portrait {
+      width: min(220px, 60vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 4.6rem;
+      font-weight: 900;
+      letter-spacing: -.1em;
+      color: #03121d;
+      background: linear-gradient(135deg, #e0f2fe, #a7f3d0 60%, #fef3c7);
+      border: 10px solid rgba(255,255,255,.12);
+      box-shadow: 0 40px 90px rgba(0,0,0,.42);
+    }
+
+    .contact-card { padding: 24px; }
+
+    .contact-card h2 {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .96rem;
+    }
+
+    .contact-list a, .contact-list span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    section { padding: 58px 0; }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.9rem, 3.7vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .section-head p {
+      max-width: 600px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .skill-card {
+      padding: 22px;
+      min-height: 160px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.065);
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,.10);
+    }
+
+    .skill-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+    }
+
+    .skill-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: .94rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .filter {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .filter.active {
+      color: #04111c;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .project {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255,255,255,.07);
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+      transition: transform .25s ease, border-color .25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .project::after {
+      content: "6 imágenes";
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.72);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: .76rem;
+      font-weight: 800;
+      color: #e2e8f0;
+      backdrop-filter: blur(12px);
+    }
+
+    .project:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56,189,248,.55);
+    }
+
+    .project img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: #111827;
+    }
+
+    .project-body { padding: 20px; }
+
+    .tag {
+      display: inline-flex;
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(167,243,208,.22);
+      background: rgba(167,243,208,.07);
+      margin-bottom: 12px;
+    }
+
+    .project h3 {
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .project p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: .95rem;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .job {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.065);
+    }
+
+    .job .date {
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+
+    .job h3 { margin: 0 0 8px; }
+
+    .job p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .cta {
+      padding: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(56,189,248,.18), rgba(167,243,208,.12)),
+        rgba(255,255,255,.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      letter-spacing: -.05em;
+    }
+
+    .cta p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 34px 0 54px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0,0,0,.68);
+      backdrop-filter: blur(14px);
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(1060px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: #0b1220;
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-main {
+      position: relative;
+      background: #020617;
+    }
+
+    .modal-img {
+      width: 100%;
+      aspect-ratio: 16 / 8.5;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(2,6,23,.72);
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-btn.prev { left: 16px; }
+    .gallery-btn.next { right: 16px; }
+
+    .counter {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.72);
+      border: 1px solid rgba(255,255,255,.18);
+      font-weight: 800;
+      color: #e2e8f0;
+      backdrop-filter: blur(12px);
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      padding: 14px;
+      background: rgba(255,255,255,.04);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .thumb {
+      border: 2px solid transparent;
+      padding: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      cursor: pointer;
+      opacity: .68;
+    }
+
+    .thumb.active {
+      border-color: var(--accent);
+      opacity: 1;
+    }
+
+    .thumb img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-content { padding: 26px; }
+
+    .modal-content h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.6rem, 4vw, 2.7rem);
+      letter-spacing: -.04em;
+    }
+
+    .modal-content p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+    }
+
+    .close {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+
+    /* === AJUSTES SYNERGIA + VISOR 360 SIN LIBRERÍAS EXTERNAS === */
+    .hero {
+      padding: 46px 0 34px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+      align-items: start;
+    }
+
+    .hero-card {
+      min-height: auto;
+      padding-bottom: 34px;
+    }
+
+    .profile-panel {
+      align-content: start;
+      gap: 16px;
+    }
+
+    .photo-card {
+      min-height: 250px;
+      padding: 26px;
+    }
+
+    .portrait {
+      width: min(270px, 70vw);
+      min-height: 170px;
+      aspect-ratio: auto;
+      border-radius: 28px;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.055)),
+        radial-gradient(circle at 50% 35%, rgba(56,189,248,.22), transparent 18rem);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 26px 70px rgba(0,0,0,.34);
+    }
+
+    .portrait img {
+      width: 100%;
+      height: auto;
+      max-height: 185px;
+      object-fit: contain;
+      display: block;
+      filter: invert(1);
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      padding: 7px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.94);
+      color: transparent;
+      overflow: hidden;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.05;
+    }
+
+    .brand-name strong {
+      font-size: .98rem;
+      color: var(--text);
+    }
+
+    .brand-name span {
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .contact-card {
+      padding: 22px;
+    }
+
+    .contact-list {
+      gap: 8px;
+    }
+
+    .contact-list a,
+    .contact-list span {
+      min-height: 40px;
+      padding: 10px 12px;
+    }
+
+    .sig-panel {
+      padding: 22px;
+      min-height: 236px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 18% 20%, rgba(167,243,208,.16), transparent 12rem),
+        radial-gradient(circle at 86% 24%, rgba(56,189,248,.22), transparent 16rem),
+        linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+      box-shadow: var(--shadow);
+    }
+
+    .sig-panel h3 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+    }
+
+    .sig-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 88%;
+      font-size: .92rem;
+    }
+
+    .sig-map {
+      position: relative;
+      height: 142px;
+      margin-top: 16px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.13);
+      background:
+        linear-gradient(rgba(56,189,248,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.08) 1px, transparent 1px),
+        radial-gradient(circle at 30% 54%, rgba(167,243,208,.24), transparent 7rem),
+        radial-gradient(circle at 74% 40%, rgba(56,189,248,.24), transparent 7rem),
+        #07111f;
+      background-size: 26px 26px, 26px 26px, auto, auto, auto;
+    }
+
+    .sig-route {
+      position: absolute;
+      left: 34px;
+      right: 28px;
+      top: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+      transform: rotate(-12deg);
+      box-shadow: 0 0 22px rgba(56,189,248,.42);
+    }
+
+    .sig-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 8px rgba(167,243,208,.10), 0 0 24px rgba(167,243,208,.58);
+      animation: pulseDot 2.4s infinite ease-in-out;
+    }
+
+    .sig-dot.d1 { left: 18%; top: 64%; }
+    .sig-dot.d2 { left: 48%; top: 38%; animation-delay: .4s; }
+    .sig-dot.d3 { left: 76%; top: 56%; animation-delay: .8s; }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: .72; }
+      50% { transform: scale(1.32); opacity: 1; }
+    }
+
+    .sig-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .sig-metric {
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.065);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    .sig-metric strong {
+      display: block;
+      color: var(--accent-2);
+      font-size: .94rem;
+    }
+
+    .sig-metric span {
+      display: block;
+      color: var(--muted);
+      font-size: .72rem;
+      margin-top: 2px;
+    }
+
+    .panorama-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255,255,255,.065);
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+
+    .panorama-head {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .panorama-head h3 {
+      margin: 0;
+      font-size: 1.16rem;
+    }
+
+    .panorama-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .panorama-viewer {
+      position: relative;
+      width: 100%;
+      height: min(62vh, 520px);
+      min-height: 360px;
+      overflow: hidden;
+      background: #020617;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .panorama-viewer:active {
+      cursor: grabbing;
+    }
+
+    .panorama-track {
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/panoramas/santuario-chinacota-360.jpg");
+      background-repeat: repeat-x;
+      background-size: auto 100%;
+      background-position: 50% center;
+      will-change: background-position;
+      transition: filter .2s ease;
+    }
+
+    .panorama-vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(2,6,23,.28), transparent 18%, transparent 82%, rgba(2,6,23,.28)),
+        linear-gradient(0deg, rgba(2,6,23,.34), transparent 28%, transparent 78%, rgba(2,6,23,.22));
+    }
+
+    .panorama-help {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: .82rem;
+      background: rgba(2,6,23,.74);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .panorama-controls {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .panorama-controls button {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(2,6,23,.74);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .panorama-controls button:hover {
+      background: rgba(56,189,248,.24);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .brand-name span {
+        display: none;
+      }
+
+      .sig-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .panorama-viewer {
+        height: 420px;
+        min-height: 320px;
+      }
+
+      .panorama-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .projects-grid,
+      .skills { grid-template-columns: 1fr 1fr; }
+
+      .hero-card { min-height: auto; }
+
+      .profile-panel { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links { justify-content: flex-start; }
+
+      .hero { padding-top: 38px; }
+
+      .hero-grid,
+      .projects-grid,
+      .skills,
+      .hero-stats { grid-template-columns: 1fr; }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .job { grid-template-columns: 1fr; }
+
+      .cta { padding: 24px; }
+
+      .thumbs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gallery-btn {
+        width: 42px;
+        height: 42px;
+      }
+    }
+  
+    /* === AJUSTE FINAL: ALINEACIÓN HERO + VISOR 360 REAL WEBGL === */
+    .hero-grid {
+      align-items: stretch !important;
+    }
+
+    .hero-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-stats {
+      margin-top: auto;
+      padding-top: 42px;
+    }
+
+    .profile-panel {
+      height: 100%;
+      align-content: stretch;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .sig-panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sig-map {
+      flex: 1;
+      min-height: 138px;
+    }
+
+    .panorama-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255,255,255,.065);
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+
+    .panorama-head {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .panorama-head h3 {
+      margin: 0;
+      font-size: 1.16rem;
+    }
+
+    .panorama-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .panorama-viewer {
+      position: relative;
+      width: 100%;
+      height: min(68vh, 560px);
+      min-height: 390px;
+      overflow: hidden;
+      background: #020617;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .panorama-viewer:active {
+      cursor: grabbing;
+    }
+
+    #panoramaCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #020617;
+    }
+
+    .panorama-help {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: .82rem;
+      background: rgba(2,6,23,.74);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .panorama-controls {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .panorama-controls button {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(2,6,23,.74);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .panorama-controls button:hover {
+      background: rgba(56,189,248,.24);
+    }
+
+    .panorama-fallback {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/panoramas/santuario-chinacota-360.jpg");
+      background-repeat: repeat-x;
+      background-size: auto 100%;
+      background-position: center;
+    }
+
+    .panorama-error {
+      display: none;
+      position: absolute;
+      inset: auto 18px 72px 18px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: #fff;
+      background: rgba(127,29,29,.82);
+      border: 1px solid rgba(255,255,255,.22);
+      z-index: 3;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        align-items: start !important;
+      }
+
+      .profile-panel {
+        height: auto;
+        grid-template-rows: auto;
+      }
+
+      .sig-panel {
+        height: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .panorama-viewer {
+        height: 430px;
+        min-height: 340px;
+      }
+
+      .panorama-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+  
+    /* === AJUSTE FINAL DEFINITIVO: LOGO + ALINEACIÓN + 360 CANVAS === */
+    .brand-mark {
+      width: 48px !important;
+      height: 48px !important;
+      padding: 7px !important;
+      border-radius: 16px !important;
+      background: rgba(255,255,255,.055) !important;
+      border: 1px solid rgba(255,255,255,.18) !important;
+      color: transparent !important;
+      overflow: hidden !important;
+      box-shadow: none !important;
+    }
+
+    .brand-mark img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      display: block !important;
+      filter: none !important;
+    }
+
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.05;
+    }
+
+    .brand-name strong {
+      font-size: .98rem;
+      color: var(--text);
+    }
+
+    .brand-name span {
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: auto;
+      max-height: 185px;
+      object-fit: contain;
+      display: block;
+      filter: none !important;
+    }
+
+    .hero-grid {
+      align-items: stretch !important;
+    }
+
+    .hero-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-stats {
+      margin-top: auto;
+      padding-top: 42px;
+    }
+
+    .profile-panel {
+      height: 100%;
+      align-content: stretch;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .sig-panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sig-map {
+      flex: 1;
+      min-height: 138px;
+    }
+
+    .panorama-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255,255,255,.065);
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+
+    .panorama-head {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .panorama-head h3 {
+      margin: 0;
+      font-size: 1.16rem;
+    }
+
+    .panorama-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .panorama-viewer {
+      position: relative;
+      width: 100%;
+      height: min(68vh, 560px);
+      min-height: 390px;
+      overflow: hidden;
+      background: #020617;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .panorama-viewer:active {
+      cursor: grabbing;
+    }
+
+    #panoramaCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #020617;
+    }
+
+    .panorama-help {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: .82rem;
+      background: rgba(2,6,23,.74);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .panorama-controls {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .panorama-controls button {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(2,6,23,.74);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .panorama-controls button:hover {
+      background: rgba(56,189,248,.24);
+    }
+
+    .panorama-loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: #020617;
+      z-index: 1;
+      font-weight: 800;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        align-items: start !important;
+      }
+
+      .profile-panel {
+        height: auto;
+        grid-template-rows: auto;
+      }
+
+      .sig-panel {
+        height: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .brand-name span {
+        display: none;
+      }
+
+      .panorama-viewer {
+        height: 430px;
+        min-height: 340px;
+      }
+
+      .panorama-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <span class="brand-mark"><img src="assets/branding/synergia-icon.png" alt="Synergia Architecture"></span>
+        <span class="brand-name"><strong>Arq. Brayan Becerra</strong><span>Synergia Architecture</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#perfil">Perfil</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#experiencia">Experiencia</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <article class="hero-card">
+          <span class="eyebrow"><span class="pulse"></span> Portafolio profesional</span>
+          <h1><span class="grad">Arquitectura, SIG y gestión territorial.</span></h1>
+          <p class="lead">
+            Arquitecto y Magíster en Diseño y Gestión de Proyectos Tecnológicos, con experiencia en
+            Sistemas de Información Geográfica, catastro multipropósito, ordenamiento territorial,
+            visualización de datos y desarrollo de soluciones digitales para la toma de decisiones.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#proyectos">Ver proyectos</a>
+            <a class="btn" href="#contacto">Contacto</a>
+          </div>
+
+          <div class="hero-stats" aria-label="Indicadores principales">
+            <div class="stat">
+              <strong>+8</strong>
+              <span>Años en análisis territorial y SIG</span>
+            </div>
+            <div class="stat">
+              <strong>+10</strong>
+              <span>Entidades Públicas y Privadas</span>
+            </div>
+            <div class="stat">
+              <strong>+20</strong>
+              <span>Proyectos arquitectónicos</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="profile-panel" id="perfil">
+          <div class="panel photo-card">
+            <div class="portrait"><img src="assets/branding/synergia-logo.png" alt="Synergia Architecture"></div>
+          </div>
+
+          <div class="panel contact-card">
+            <h2>Brayan Yesid Becerra Gómez</h2>
+            <div class="contact-list">
+              <span>📍 Cúcuta, Colombia</span>
+              <a href="mailto:Arq.BrayanBecerra@gmail.com">✉️ Arq.BrayanBecerra@gmail.com</a>
+              <a href="https://www.linkedin.com/in/brayan-becerra-mg-sig/" target="_blank" rel="noopener">🔗 LinkedIn profesional</a>
+            </div>
+          </div>
+          <div class="sig-panel">
+            <h3>Proyectos Territoriales</h3>
+            <p>Arquitectura + SIG para interpretar proyectos, localización, datos urbanos y gestión catastral desde una visión espacial.</p>
+            <div class="sig-map" aria-label="Mapa SIG interactivo decorativo">
+              <div class="sig-route"></div>
+              <div class="sig-dot d1"></div>
+              <div class="sig-dot d2"></div>
+              <div class="sig-dot d3"></div>
+            </div>
+            <div class="sig-metrics">
+              <div class="sig-metric"><strong>Catastro</strong><span>Catastro multipropósito</span></div>
+              <div class="sig-metric"><strong>SIG</strong><span>Analisis Espacial</span></div>
+              <div class="sig-metric"><strong>Diseño</strong><span>Proyectos Arquitectónicos</span></div>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </section>
+
+    <section id="habilidades">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Especialidades</h2>
+          <p>Perfil técnico orientado a soluciones geoespaciales, catastro, planificación urbana, control de calidad cartográfica y visualización ejecutiva.</p>
+        </div>
+
+        <div class="skills">
+          <article class="skill-card">
+            <h3>SIG y catastro</h3>
+            <p>ArcGIS Pro, ArcGIS Online, ArcMap, QGIS, GNSS, geodatabases y control de calidad para catastro multipropósito.</p>
+          </article>
+          <article class="skill-card">
+            <h3>Ordenamiento territorial</h3>
+            <p>Análisis espacial, modelamiento territorial, determinantes ambientales, urbanas y socioeconómicas.</p>
+          </article>
+          <article class="skill-card">
+            <h3>Datos y tableros</h3>
+            <p>Power BI, ArcGIS Dashboards, indicadores, seguimiento operativo y visualización institucional.</p>
+          </article>
+          <article class="skill-card">
+            <h3>Arquitectura y 3D</h3>
+            <p>AutoCAD, Revit, SketchUp, Blender, Photoshop, Twinmotion, Enscape, D5 Render y V-Ray.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Proyectos realizados</h2>
+          <p>Proyectos arquitectónicos, urbanos y de gestión catastral e inmobiliaria a nivel municipal.</p>
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Filtros de proyectos">
+          <button class="filter active" data-filter="todos">Todos</button>
+          <button class="filter" data-filter="sig">SIG</button>
+          <button class="filter" data-filter="catastro">Catastro</button>
+          <button class="filter" data-filter="urbano">Urbano</button>
+          <button class="filter" data-filter="datos">Datos</button>
+          <button class="filter" data-filter="arquitectura">Arquitectura</button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid"></div>
+      </div>
+    </section>
+
+    <section id="experiencia">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Experiencia</h2>
+          <p>Resumen ejecutivo de cargos y líneas de trabajo más relevantes.</p>
+        </div>
+
+        <div class="timeline">
+          <article class="job">
+            <div class="date">2024 - Actual</div>
+            <div>
+              <h3>Control de Calidad y Conservación Catastral · IGAC</h3>
+              <p>Control de calidad SIG, cartografía, avalúos y conservación catastral, con enfoque en precisión, consistencia y cumplimiento normativo.</p>
+            </div>
+          </article>
+
+          <article class="job">
+            <div class="date">2025 - Actual</div>
+            <div>
+              <h3>Coordinador de Sistemas de Información · Agencia Catastral de Cundinamarca</h3>
+              <p>Supervisión de datos cartográficos para levantamiento de variables físicas en actualización catastral urbana y rural.</p>
+            </div>
+          </article>
+
+          <article class="job">
+            <div class="date">2023 - 2024</div>
+            <div>
+              <h3>Docente Universitario · Universidad de Pamplona</h3>
+              <p>Formación en SIG, modelado 3D, visualización arquitectónica, diseño asistido por computador y experiencias con IA.</p>
+            </div>
+          </article>
+
+          <article class="job">
+            <div class="date">2021 - 2023</div>
+            <div>
+              <h3>Arquitecto SIG · Alcaldía de Cúcuta</h3>
+              <p>Diseño, análisis y gestión de proyectos urbanos mediante SIG, incluyendo herramientas de apoyo para la toma de decisiones territoriales.</p>
+            </div>
+          </article>
+
+<article class="job">
+            <div class="date">2020 - 2022</div>
+            <div>
+              <h3>Arquitecto SIG · Área Metropolitana de Cúcuta</h3>
+              <p>Análisis, diseño y gestión de proyectos arquitectónicos y urbanos adelantados en el AMC, mediante SIG..</p>
+            </div>
+          </article>
+
+          <article class="job">
+            <div class="date">2019 - 2023</div>
+            <div>
+              <h3>Arquitecto Freelance · Tova Design</h3>
+              <p>Diseño, modelado 3D, visualización arquitectónica y seguimiento de obra, para proyectos de arquitectura e interiorismo.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2>¿Revisamos un proyecto?</h2>
+            <p>Excelencia técnica, diseño arquitectónico profesional y creativo, experiencia +8 años.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn primary" href="mailto:Arq.BrayanBecerra@gmail.com">Enviar correo</a>
+            <a class="btn" href="https://www.linkedin.com/in/brayan-becerra-mg-sig/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+        <div class="panorama-card">
+          <div class="panorama-head">
+            <div>
+              <h3>Recorrido 360° · Santuario Chinácota</h3>
+              <p>Arrastra la imagen para explorar el espacio arquitectónico en una vista 360° real.</p>
+            </div>
+            <span class="tag">360° interactivo</span>
+          </div>
+          <div class="panorama-viewer" id="panoramaViewer" aria-label="Visor panorámico 360 grados">
+            <canvas id="panoramaCanvas"></canvas>
+            <div class="panorama-loading" id="panoramaLoading">Cargando recorrido 360°...</div>
+            <div class="panorama-help">Arrastra para mirar en 360° · rueda para acercar</div>
+            <div class="panorama-controls">
+              <button type="button" id="panoramaLeft" aria-label="Girar a la izquierda">‹</button>
+              <button type="button" id="panoramaPause" aria-label="Pausar o activar rotación">Ⅱ</button>
+              <button type="button" id="panoramaRight" aria-label="Girar a la derecha">›</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Synergia Architecture · Arq. Brayan Becerra
+    </div>
+  </footer>
+
+  <div class="modal" id="projectModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="gallery-main">
+        <img class="modal-img" id="modalImage" alt="">
+        <button class="gallery-btn prev" id="prevImage" aria-label="Imagen anterior">‹</button>
+        <button class="gallery-btn next" id="nextImage" aria-label="Imagen siguiente">›</button>
+        <div class="counter" id="imageCounter">1 / 6</div>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="modal-content">
+        <span class="tag" id="modalTag"></span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalText"></p>
+        <div class="modal-actions">
+          <button class="close" id="closeModal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      EDITAR GALERÍAS:
+      Cada proyecto tiene 6 imágenes dentro de "images".
+      Puedes reemplazar los archivos en assets/proyectos/
+      o cambiar las rutas por tus nombres reales.
+    */
+    const projects = [
+       {
+        title: "Diseño arquitectónico, modelado 3D y renderizado",
+        category: "arquitectura",
+        tag: "Arquitectura",
+        images: [
+          "assets/proyectos/arquitectura-3d/01.jpg",
+          "assets/proyectos/arquitectura-3d/02.jpg",
+          "assets/proyectos/arquitectura-3d/03.jpg",
+          "assets/proyectos/arquitectura-3d/04.jpg",
+          "assets/proyectos/arquitectura-3d/05.jpg",
+          "assets/proyectos/arquitectura-3d/06.jpg"
+        ],
+        short: "Diseño, representación y visualización arquitectónica para proyectos residenciales y urbanos.",
+        detail: "Desarrollo de propuestas arquitectónicas, modelado 3D, visualización, renderizado y coordinación técnica para proyectos de vivienda, interiorismo y mediano impacto."
+      },
+      {
+        title: "Análisis de ordenamiento territorial",
+        category: "sig urbano",
+        tag: "Ordenamiento",
+        images: [
+          "assets/proyectos/ordenamiento/01.png",
+          "assets/proyectos/ordenamiento/02.png",
+          "assets/proyectos/ordenamiento/03.jpg",
+          "assets/proyectos/ordenamiento/04.jpg",
+          "assets/proyectos/ordenamiento/05.jpg",
+          "assets/proyectos/ordenamiento/06.jpg"
+        ],
+        short: "Modelamiento espacial para instrumentos de planificación y gestión territorial.",
+        detail: "Análisis de variables urbanas, ambientales y socioeconómicas mediante herramientas SIG, orientado a formular escenarios y apoyar instrumentos de ordenamiento territorial."
+      },
+      {
+        title: "Control de calidad SIG para catastro multipropósito",
+        category: "catastro sig",
+        tag: "Catastro",
+        images: [
+          "assets/proyectos/catastro/01.jpg",
+          "assets/proyectos/catastro/02.jpg",
+          "assets/proyectos/catastro/03.jpg",
+          "assets/proyectos/catastro/04.jpg",
+          "assets/proyectos/catastro/05.jpg",
+          "assets/proyectos/catastro/06.jpg"
+        ],
+        short: "Validación cartográfica, consistencia lógica y depuración de información geográfica institucional.",
+        detail: "Proyecto orientado al control de calidad de datos geográficos y alfanuméricos para procesos de actualización y conservación catastral. Incluye revisión de estructuras, consistencia espacial, reglas técnicas y soporte a la toma de decisiones."
+      },
+      {
+        title: "Proyectos urbanos",
+        category: "sig urbano",
+        tag: "Infraestructura",
+        images: [
+          "assets/proyectos/Proyectos-urbanos/01.jpg",
+          "assets/proyectos/Proyectos-urbanos/02.jpg",
+          "assets/proyectos/Proyectos-urbanos/03.jpg",
+          "assets/proyectos/Proyectos-urbanos/04.jpg",
+          "assets/proyectos/Proyectos-urbanos/05.jpg",
+          "assets/proyectos/Proyectos-urbanos/06.png"
+        ],
+        short: "Proyectos arquitectónicos de diseño de infraestructura urbana.",
+        detail: "Diselo y visualización de la infraestructura urbana, con soporte cartográfico para seguimiento técnico, priorización e intervención institucional."
+      },
+      {
+        title: "Experiencia docente",
+        category: "arquitectura",
+        tag: "Arquitectura",
+        images: [
+          "assets/proyectos/Experiencia-docente/01.jpg",
+          "assets/proyectos/Experiencia-docente/02.jpg",
+          "assets/proyectos/Experiencia-docente/03.png",
+          "assets/proyectos/Experiencia-docente/04.jpg",
+          "assets/proyectos/Experiencia-docente/05.png",
+          "assets/proyectos/Experiencia-docente/06.jpg"
+        ],
+        short: "Docencia universitaria para arquitectura.",
+        detail: "Integración del diseño arquitectónico, visualización de espacial y seguimiento operativo, trazabilidad de procesos y visualización de datos urbanos."
+      },
+      {
+        title: "Aplicación SIG urbana Cúcuta 2050",
+        category: "sig urbano",
+        tag: "SIG urbano",
+        images: [
+          "assets/proyectos/cucuta2050/01.jpg",
+          "assets/proyectos/cucuta2050/02.jpg",
+          "assets/proyectos/cucuta2050/03.jpg",
+          "assets/proyectos/cucuta2050/04.jpg",
+          "assets/proyectos/cucuta2050/05.png",
+          "assets/proyectos/cucuta2050/06.jpg"
+        ],
+        short: "Herramienta web para visualizar proyectos urbanos actuales y futuros en la ciudad.",
+        detail: "Aplicación de apoyo para consulta, visualización y seguimiento de proyectos urbanos, articulando cartografía, atributos y capas temáticas para mejorar la lectura territorial y la toma de decisiones."
+      },
+      
+    ];
+
+    const grid = document.getElementById("projectsGrid");
+    const filters = document.querySelectorAll(".filter");
+    const modal = document.getElementById("projectModal");
+    const modalImage = document.getElementById("modalImage");
+    const modalTag = document.getElementById("modalTag");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalText = document.getElementById("modalText");
+    const closeModal = document.getElementById("closeModal");
+    const prevImage = document.getElementById("prevImage");
+    const nextImage = document.getElementById("nextImage");
+    const imageCounter = document.getElementById("imageCounter");
+    const thumbs = document.getElementById("thumbs");
+
+    let activeProject = null;
+    let activeImageIndex = 0;
+
+    function renderProjects(filter = "todos") {
+      grid.innerHTML = "";
+
+      const visible = filter === "todos"
+        ? projects
+        : projects.filter(project => project.category.includes(filter));
+
+      visible.forEach((project) => {
+        const card = document.createElement("article");
+        card.className = "project";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <img src="${project.images[0]}" alt="Imagen principal del proyecto ${project.title}" loading="lazy">
+          <div class="project-body">
+            <span class="tag">${project.tag}</span>
+            <h3>${project.title}</h3>
+            <p>${project.short}</p>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openModal(project));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") openModal(project);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function openModal(project) {
+      activeProject = project;
+      activeImageIndex = 0;
+
+      modalTag.textContent = project.tag;
+      modalTitle.textContent = project.title;
+      modalText.textContent = project.detail;
+
+      renderGallery();
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function renderGallery() {
+      if (!activeProject) return;
+
+      const total = activeProject.images.length;
+      const current = activeProject.images[activeImageIndex];
+
+      modalImage.src = current;
+      modalImage.alt = `Imagen ${activeImageIndex + 1} del proyecto ${activeProject.title}`;
+      imageCounter.textContent = `${activeImageIndex + 1} / ${total}`;
+
+      thumbs.innerHTML = "";
+      activeProject.images.forEach((src, index) => {
+        const button = document.createElement("button");
+        button.className = "thumb" + (index === activeImageIndex ? " active" : "");
+        button.type = "button";
+        button.setAttribute("aria-label", `Ver imagen ${index + 1}`);
+        button.innerHTML = `<img src="${src}" alt="Miniatura ${index + 1}" loading="lazy">`;
+        button.addEventListener("click", () => {
+          activeImageIndex = index;
+          renderGallery();
+        });
+        thumbs.appendChild(button);
+      });
+    }
+
+    function moveImage(direction) {
+      if (!activeProject) return;
+      const total = activeProject.images.length;
+      activeImageIndex = (activeImageIndex + direction + total) % total;
+      renderGallery();
+    }
+
+    function closeProjectModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    filters.forEach(button => {
+      button.addEventListener("click", () => {
+        filters.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        renderProjects(button.dataset.filter);
+      });
+    });
+
+    closeModal.addEventListener("click", closeProjectModal);
+    prevImage.addEventListener("click", () => moveImage(-1));
+    nextImage.addEventListener("click", () => moveImage(1));
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeProjectModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeProjectModal();
+      if (modal.classList.contains("open") && event.key === "ArrowLeft") moveImage(-1);
+      if (modal.classList.contains("open") && event.key === "ArrowRight") moveImage(1);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    renderProjects();
+</script>
+</body>
+</html>
