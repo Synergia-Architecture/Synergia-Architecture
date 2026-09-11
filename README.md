@@ -1,10 +1,9 @@
 # Synergia Architecture - Portafolio
 
-## Proyectos urbanos y arquitectura
+## Orden del portafolio
 
-* Portafolio
-* Prestación de servicios.
-* Experiencia profesional.
-
-## 
-
+1. Portafolio profesional
+2. Proyectos destacados
+3. Proyectos realizados
+4. Experiencia
+5. ¿Revisamos un proyecto?
